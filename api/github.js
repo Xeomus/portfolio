@@ -89,17 +89,29 @@ function getDomain(homepageUrl, fallback) {
   }
 }
 
+function getRepositoryOpenGraphImage(username, repoName) {
+  return `https://opengraph.githubassets.com/portfolio/${username}/${repoName}`
+}
+
+function getWebsiteScreenshot(homepageUrl) {
+  if (!homepageUrl) return null
+
+  return `https://s.wordpress.com/mshots/v1/${encodeURIComponent(homepageUrl)}?w=1200`
+}
+
 function mapRepositoryToProject(repo, username) {
   const languages = repo.languages.nodes.map((language) => language.name)
   const topics = repo.repositoryTopics.nodes.map((node) => node.topic.name)
   const technologyList = unique([...languages, repo.primaryLanguage?.name, ...topics]).slice(0, 7)
   const fallbackDomain = `github.com/${username}/${repo.name}`
+  const fallbackImage = getRepositoryOpenGraphImage(username, repo.name)
 
   return {
     date: formatDateRange(repo.pushedAt),
     description: repo.description || 'Repositorio publico de GitHub con codigo, commits y actividad real.',
     domain: getDomain(repo.homepageUrl, fallbackDomain),
-    image: `https://opengraph.githubassets.com/portfolio/${username}/${repo.name}`,
+    image: getWebsiteScreenshot(repo.homepageUrl) || fallbackImage,
+    imageFallback: fallbackImage,
     technologies: technologyList.length ? technologyList : ['GitHub'],
     title: repo.name,
     type: repo.primaryLanguage?.name || 'Repo',

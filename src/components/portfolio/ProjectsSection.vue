@@ -13,6 +13,12 @@ defineProps({
     required: true,
   },
 })
+
+function useProjectImageFallback(event, fallbackImage) {
+  if (!fallbackImage || event.target.src === fallbackImage) return
+
+  event.target.src = fallbackImage
+}
 </script>
 
 <template>
@@ -62,7 +68,11 @@ defineProps({
           <span></span>
           <small>{{ project.domain }}</small>
         </div>
-        <img :src="project.image" :alt="project.title" />
+        <img
+          :src="project.image"
+          :alt="`Captura de ${project.title}`"
+          @error="useProjectImageFallback($event, project.imageFallback)"
+        />
       </div>
       <div class="project-content">
         <span class="project-type">{{ project.type }}</span>
