@@ -1,0 +1,64 @@
+.tech-section {
+  padding: 82px 0 36px;
+}
+
+.tech-categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  align-items: start;
+  gap: 20px;
+}
+
+.tech-category {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+
+.tech-category h3 {
+  color: var(--muted-strong);
+  font-size: 1rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.tech-category h3::before {
+  color: var(--accent);
+  content: "// ";
+}
+
+.tech-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  max-width: 100%;
+}
+
+.tech-cloud a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.045);
+  color: var(--muted-strong);
+  padding: 12px 15px;
+  font-size: 0.9rem;
+}
+
+.tech-cloud img {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  object-fit: contain;
+}
+
+.tech-cloud img[src*='express'],
+.tech-cloud img[src*='github'],
+.tech-cloud img[src*='vercel'] {
+  filter: invert(1);
+}
+
+.tech-cloud img[src*='handlebars'] {
+  filter: brightness(0) saturate(100%) invert(54%) sepia(92%) saturate(1985%) hue-rotate(2deg) brightness(104%) contrast(101%);
+}

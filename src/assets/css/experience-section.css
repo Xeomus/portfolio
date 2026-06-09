@@ -1,0 +1,126 @@
+.experience {
+  padding: 82px 0 36px;
+}
+
+.timeline {
+  display: grid;
+  gap: 30px;
+}
+
+.experience-card {
+  display: grid;
+  grid-template-columns: 78px 1fr;
+  gap: 28px;
+}
+
+.timeline-mark {
+  position: relative;
+  display: grid;
+  width: 70px;
+  height: 70px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(10, 12, 15, 0.9);
+  color: var(--text);
+  font-size: 2.1rem;
+  font-weight: 900;
+}
+
+.timeline-mark::after {
+  position: absolute;
+  top: 86px;
+  width: 1px;
+  height: calc(100% + 155px);
+  background: linear-gradient(var(--line), transparent);
+  content: "";
+}
+
+.experience-card:last-child .timeline-mark::after {
+  display: none;
+}
+
+.experience-panel {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background:
+    linear-gradient(135deg, rgba(43, 45, 66, 0.45), transparent 34%),
+    rgba(17, 19, 24, 0.86);
+  box-shadow:
+    0 28px 80px rgba(0, 0, 0, 0.36),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.025);
+  padding: 34px;
+}
+
+.experience-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.experience-top h3 span {
+  display: inline-flex;
+  margin-left: 10px;
+  border: 1px solid rgba(255, 176, 32, 0.35);
+  border-radius: 999px;
+  color: var(--warning);
+  padding: 4px 8px;
+  font-size: 0.82rem;
+  vertical-align: middle;
+}
+
+.experience-top p,
+.experience-top time,
+.experience-summary {
+  color: var(--muted-strong);
+}
+
+.experience-summary {
+  margin: 24px 0 18px;
+}
+
+.experience-panel ul {
+  display: grid;
+  gap: 16px;
+  margin: 0 0 24px;
+  padding: 0;
+  list-style: none;
+  color: var(--muted-strong);
+}
+
+.experience-panel li {
+  position: relative;
+  padding-left: 34px;
+}
+
+.experience-panel li::before {
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  content: "--";
+}
+
+@media (max-width: 620px) {
+  .experience-card {
+    grid-template-columns: 1fr;
+  }
+
+  .timeline-mark {
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    font-size: 1.5rem;
+  }
+
+  .timeline-mark::after {
+    display: none;
+  }
+
+  .experience-panel {
+    padding: 22px;
+  }
+
+  .experience-top {
+    display: grid;
+  }
+}

@@ -1,0 +1,32 @@
+.signal-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  padding: 24px 0 72px;
+  color: var(--muted-strong);
+}
+
+.signal-strip span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.signal-strip span::before {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent-2);
+  box-shadow: 0 0 18px rgba(239, 35, 60, 0.5);
+  content: "";
+}
+
+.signal-strip strong {
+  color: var(--text);
+}
+
+@media (max-width: 920px) {
+  .signal-strip {
+    grid-template-columns: 1fr;
+  }
+}

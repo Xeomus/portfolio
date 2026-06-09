@@ -1,0 +1,71 @@
+:root {
+  --space-indigo: #2b2d42;
+  --lavender-grey: #8d99ae;
+  --platinum: #edf2f4;
+  --strawberry-red: #ef233c;
+  --flag-red: #d90429;
+  --bg: #0d0e13;
+  --bg-soft: #171923;
+  --surface: #20222f;
+  --surface-strong: var(--space-indigo);
+  --line: rgba(237, 242, 244, 0.14);
+  --text: var(--platinum);
+  --muted: rgba(141, 153, 174, 0.78);
+  --muted-strong: var(--lavender-grey);
+  --accent: var(--strawberry-red);
+  --accent-2: var(--flag-red);
+  --accent-3: var(--space-indigo);
+  --warning: #ef8354;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  color: var(--text);
+  background: var(--bg);
+  font-family:
+    "JetBrains Mono",
+    "Cascadia Code",
+    "SFMono-Regular",
+    Consolas,
+    monospace;
+  font-size: 16px;
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
