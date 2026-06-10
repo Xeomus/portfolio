@@ -161,7 +161,31 @@ h3 {
     width: min(100% - 22px, 1280px);
   }
 
+  .section-heading {
+    margin-bottom: 22px;
+  }
+
+  .eyebrow {
+    margin-bottom: 14px;
+    font-size: 0.84rem;
+  }
+
   h1 {
-    font-size: 2.85rem;
+    font-size: 2.55rem;
+    line-height: 1.02;
+  }
+
+  h2 {
+    font-size: 1.85rem;
+  }
+
+  h3 {
+    font-size: 1.32rem;
+  }
+}
+
+@media (max-width: 380px) {
+  h1 {
+    font-size: 2.28rem;
   }
 }

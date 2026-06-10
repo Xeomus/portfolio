@@ -45,5 +45,22 @@
 @media (max-width: 920px) {
   .about-grid {
     grid-template-columns: 1fr;
+    gap: 38px;
+  }
+}
+
+@media (max-width: 620px) {
+  .about-grid {
+    gap: 28px;
+    padding: 52px 0;
+  }
+
+  .about-copy {
+    font-size: 0.98rem;
+    line-height: 1.72;
+  }
+
+  .link-row a {
+    width: 100%;
   }
 }

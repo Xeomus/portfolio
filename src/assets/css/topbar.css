@@ -17,6 +17,7 @@
 }
 
 .brand {
+  flex: 0 0 auto;
   color: var(--text);
   font-size: 1.28rem;
   font-weight: 900;
@@ -30,6 +31,7 @@
 
 .topbar nav {
   display: flex;
+  min-width: 0;
   align-items: center;
   gap: 12px;
   color: var(--muted-strong);
@@ -38,6 +40,7 @@
 
 .topbar nav a,
 .topbar-action {
+  flex: 0 0 auto;
   border-radius: 8px;
   padding: 12px 14px;
   transition:
@@ -81,14 +84,31 @@
   .topbar {
     width: calc(100% - 18px);
     padding: 8px;
+    gap: 8px;
   }
 
   .brand {
     font-size: 1rem;
   }
 
+  .brand .brand-icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .topbar nav {
+    flex: 1 1 auto;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .topbar nav::-webkit-scrollbar {
+    display: none;
+  }
+
   .topbar nav a {
     padding: 8px 7px;
+    white-space: nowrap;
   }
 }
 

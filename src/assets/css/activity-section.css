@@ -104,9 +104,33 @@
 @media (max-width: 920px) {
   .activity {
     grid-template-columns: 1fr;
+    gap: 28px;
   }
 
   .activity-head {
     display: block;
+  }
+}
+
+@media (max-width: 620px) {
+  .activity {
+    padding: 52px 0;
+  }
+
+  .activity-head h2 {
+    font-size: 1.5rem;
+  }
+
+  .github-calendar {
+    overflow-x: auto;
+    padding: 18px 16px 16px;
+  }
+
+  .github-calendar-svg {
+    min-width: 620px;
+  }
+
+  .calendar-legend {
+    min-width: 620px;
   }
 }

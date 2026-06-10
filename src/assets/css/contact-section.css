@@ -79,8 +79,17 @@
 }
 
 @media (max-width: 620px) {
+  .contact {
+    padding: 58px 0 64px;
+  }
+
   .contact-form {
     padding: 22px;
+    border-radius: 14px;
+  }
+
+  .contact-form button {
+    width: 100%;
   }
 }
 

@@ -27,6 +27,15 @@
 
 @media (max-width: 920px) {
   .signal-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding-bottom: 52px;
+  }
+}
+
+@media (max-width: 620px) {
+  .signal-strip {
     grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 8px 0 46px;
   }
 }
