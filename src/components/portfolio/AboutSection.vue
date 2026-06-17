@@ -11,7 +11,7 @@ import '@/assets/css/about-section.css'
     <div class="about-copy">
       <p>
         Full Stack Developer with experience designing and developing modern web applications using React, Angular,
-        Vue, Springboot, Node.js, Express, and , MS SQL, MySQL, SQL, Firebase, MongoDB.
+        Vue, Springboot, Node.js, Express, and MS SQL, MySQL, SQL, Firebase, MongoDB.
       </p>
       <p>
         From intuitive user interfaces to scalable backend systems, I enjoy transforming ideas into reliable products
@@ -24,7 +24,7 @@ import '@/assets/css/about-section.css'
           View Github
         </a>
         <a href="https://www.linkedin.com/in/esteban-nava-ing/" target="_blank" rel="noreferrer">
-          <i class="bi bi-link-45deg btn-icon" aria-hidden="true"></i>
+          <i class="bi bi-linkedin btn-icon" aria-hidden=" true"></i>
           View LinkedIn
         </a>
         <a href="#contacto">

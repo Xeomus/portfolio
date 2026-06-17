@@ -47,7 +47,8 @@
 
 .contact-form textarea {
   min-height: 160px;
-  resize: vertical;
+  overflow-y: auto;
+  resize: none;
 }
 
 .contact-form label span {
@@ -55,6 +56,27 @@
   font-size: 0.82rem;
   font-weight: 500;
   text-align: right;
+}
+
+.contact-form__status {
+  grid-column: 1 / -1;
+  margin: 0;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-weight: 800;
+}
+
+.contact-form__status--success {
+  border-color: rgba(80, 200, 120, 0.28);
+  background: rgba(80, 200, 120, 0.1);
+  color: #a6f3bd;
+}
+
+.contact-form__status--error {
+  border-color: rgba(239, 35, 60, 0.32);
+  background: rgba(239, 35, 60, 0.1);
+  color: #ffb3bd;
 }
 
 .contact-form button {
@@ -70,6 +92,11 @@
   padding: 12px 18px;
   font-weight: 900;
   box-shadow: 0 0 26px rgba(239, 35, 60, 0.24);
+}
+
+.contact-form button:disabled {
+  cursor: wait;
+  opacity: 0.72;
 }
 
 @media (max-width: 920px) {
