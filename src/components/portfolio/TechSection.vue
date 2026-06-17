@@ -11,7 +11,7 @@ defineProps({
 </script>
 
 <template>
-  <section class="section-wrap tech-section" aria-labelledby="tech-title">
+  <section id="tecnologias" class="section-wrap tech-section" aria-labelledby="tech-title">
     <div class="section-heading">
       <div>
         <p class="eyebrow">Technologies I use.</p>

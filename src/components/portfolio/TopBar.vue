@@ -4,46 +4,70 @@ import '@/assets/css/topbar.css'
 
 const navItems = [
   { href: '#inicio', id: 'inicio', label: 'Home' },
-  { href: '#trabajo', id: 'trabajo', label: 'My work' },
   { href: '#experiencia', id: 'experiencia', label: 'Experience' },
+  { href: '#trabajo', id: 'trabajo', label: 'My work' },
   { href: '#contacto', id: 'contacto', label: 'Contact' },
 ]
 
+const observedSections = [
+  { id: 'inicio', navId: 'inicio' },
+  { id: 'acerca', navId: 'inicio' },
+  { id: 'actividad', navId: 'inicio' },
+  { id: 'experiencia', navId: 'experiencia' },
+  { id: 'trabajo', navId: 'trabajo' },
+  { id: 'tecnologias', navId: 'trabajo' },
+  { id: 'contacto', navId: 'contacto' },
+]
+
 const activeSection = ref('inicio')
-let observer
+let scrollFrame
 
 function setActiveSection(sectionId) {
   activeSection.value = sectionId
 }
 
-onMounted(() => {
-  observer = new IntersectionObserver(
-    (entries) => {
-      const visibleEntry = entries
-        .filter((entry) => entry.isIntersecting)
-        .sort((first, second) => second.intersectionRatio - first.intersectionRatio)[0]
+function updateActiveSection() {
+  const activationLine = window.innerHeight * 0.36
+  const currentSection = observedSections
+    .map((section) => ({
+      ...section,
+      element: document.getElementById(section.id),
+    }))
+    .filter((section) => section.element)
+    .map((section) => ({
+      ...section,
+      top: section.element.getBoundingClientRect().top,
+    }))
+    .filter((section) => section.top <= activationLine)
+    .sort((first, second) => second.top - first.top)[0]
 
-      if (visibleEntry) {
-        activeSection.value = visibleEntry.target.id
-      }
-    },
-    {
-      rootMargin: '-28% 0px -58% 0px',
-      threshold: [0.1, 0.25, 0.5],
-    },
-  )
+  if (currentSection) {
+    activeSection.value = currentSection.navId
+  }
+}
 
-  navItems.forEach((item) => {
-    const section = document.getElementById(item.id)
+function requestActiveSectionUpdate() {
+  if (scrollFrame) return
 
-    if (section) {
-      observer.observe(section)
-    }
+  scrollFrame = window.requestAnimationFrame(() => {
+    updateActiveSection()
+    scrollFrame = null
   })
+}
+
+onMounted(() => {
+  updateActiveSection()
+  window.addEventListener('scroll', requestActiveSectionUpdate, { passive: true })
+  window.addEventListener('resize', requestActiveSectionUpdate)
 })
 
 onBeforeUnmount(() => {
-  observer?.disconnect()
+  window.removeEventListener('scroll', requestActiveSectionUpdate)
+  window.removeEventListener('resize', requestActiveSectionUpdate)
+
+  if (scrollFrame) {
+    window.cancelAnimationFrame(scrollFrame)
+  }
 })
 </script>
 

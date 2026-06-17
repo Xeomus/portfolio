@@ -3,7 +3,7 @@ import '@/assets/css/about-section.css'
 </script>
 
 <template>
-  <section class="section-wrap about-grid" aria-labelledby="about-title">
+  <section id="acerca" class="section-wrap about-grid" aria-labelledby="about-title">
     <div>
       <p class="eyebrow">About me.</p>
       <h2 id="about-title">I build digital products that people actually use</h2>
