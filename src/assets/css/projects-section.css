@@ -159,6 +159,37 @@
   padding: 28px;
 }
 
+.project-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.project-pagination button {
+  min-width: 44px;
+  min-height: 42px;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 8px;
+  background: rgba(17, 19, 24, 0.82);
+  color: var(--text);
+  padding: 10px 14px;
+  font-weight: 900;
+}
+
+.project-pagination button:hover:not(:disabled),
+.project-pagination button.is-active {
+  border-color: rgba(239, 35, 60, 0.48);
+  background: rgba(239, 35, 60, 0.16);
+  color: var(--accent);
+}
+
+.project-pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
 @media (max-width: 920px) {
   .project-card {
     grid-template-columns: 1fr;

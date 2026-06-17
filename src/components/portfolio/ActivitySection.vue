@@ -15,7 +15,7 @@ defineProps({
 </script>
 
 <template>
-  <section class="section-wrap activity" aria-labelledby="activity-title">
+  <section id="actividad" class="section-wrap activity" aria-labelledby="activity-title">
     <div class="activity-head">
       <div>
         <p class="eyebrow">GitHub Activity</p>

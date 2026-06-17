@@ -1,18 +1,23 @@
 const GITHUB_GRAPHQL_URL = 'https://api.github.com/graphql'
 
 const githubPortfolioQuery = `
-  query PortfolioProfile($username: String!) {
+  query PortfolioProfile($username: String!, $repositoriesAfter: String) {
     user(login: $username) {
       followers {
         totalCount
       }
       repositories(
         first: 100
+        after: $repositoriesAfter
         ownerAffiliations: OWNER
         privacy: PUBLIC
         orderBy: { field: UPDATED_AT, direction: DESC }
       ) {
         totalCount
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
         nodes {
           name
           description
@@ -27,12 +32,12 @@ const githubPortfolioQuery = `
             name
             color
           }
-          languages(first: 8, orderBy: { field: SIZE, direction: DESC }) {
+          languages(first: 20, orderBy: { field: SIZE, direction: DESC }) {
             nodes {
               name
             }
           }
-          repositoryTopics(first: 8) {
+          repositoryTopics(first: 20) {
             nodes {
               topic {
                 name
@@ -55,6 +60,140 @@ const githubPortfolioQuery = `
     }
   }
 `
+
+const technologyAliases = {
+  angularjs: 'Angular',
+  aws: 'AWS',
+  'asp-classic': 'ASP Classic',
+  bootstrap: 'Bootstrap',
+  'c#': 'C#',
+  'c-sharp': 'C#',
+  csharp: 'C#',
+  css: 'CSS',
+  css3: 'CSS',
+  'dot-net': '.NET',
+  dotnet: '.NET',
+  'express-js': 'Express',
+  expressjs: 'Express',
+  github: 'GitHub',
+  html: 'HTML',
+  html5: 'HTML',
+  javascript: 'JavaScript',
+  js: 'JavaScript',
+  mongodb: 'MongoDB',
+  mysql: 'MySQL',
+  node: 'Node.js',
+  'node-js': 'Node.js',
+  'node.js': 'Node.js',
+  nodejs: 'Node.js',
+  postgres: 'PostgreSQL',
+  postgresql: 'PostgreSQL',
+  'react-js': 'React',
+  reactjs: 'React',
+  sql: 'SQL',
+  'spring-boot': 'Spring Boot',
+  springboot: 'Spring Boot',
+  'tailwind-css': 'Tailwind CSS',
+  tailwindcss: 'Tailwind CSS',
+  typescript: 'TypeScript',
+  vue: 'Vue',
+  'vue-js': 'Vue',
+  vuejs: 'Vue',
+}
+
+const technologyCategories = [
+  {
+    name: 'framework',
+    priority: 0,
+    items: [
+      'Vue',
+      'React',
+      'Angular',
+      'Spring Boot',
+      'Express',
+      'Node.js',
+      '.NET',
+      'Bootstrap',
+      'Tailwind CSS',
+      'Vite',
+    ],
+  },
+  {
+    name: 'language',
+    priority: 1,
+    items: ['JavaScript', 'TypeScript', 'Python', 'C#', 'Java', 'HTML', 'CSS'],
+  },
+  {
+    name: 'data',
+    priority: 2,
+    items: ['SQL', 'MySQL', 'PostgreSQL', 'MongoDB', 'Firebase'],
+  },
+  {
+    name: 'tool',
+    priority: 3,
+    items: ['GitHub', 'Git', 'Docker', 'AWS', 'Vercel'],
+  },
+]
+
+const categoryByTechnology = new Map(
+  technologyCategories.flatMap((category) =>
+    category.items.map((item, index) => [
+      item.toLowerCase(),
+      {
+        index,
+        name: category.name,
+        priority: category.priority,
+      },
+    ]),
+  ),
+)
+
+function normalizeTechnologyName(value) {
+  return String(value || '')
+    .trim()
+    .toLowerCase()
+    .replaceAll('_', '-')
+    .replaceAll(' ', '-')
+}
+
+function toDisplayTechnology(value) {
+  const normalized = normalizeTechnologyName(value)
+
+  if (!normalized) return ''
+
+  return technologyAliases[normalized]
+    || normalized
+      .split('-')
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+      .join(' ')
+}
+
+function sortTechnologiesByCategory(technologies) {
+  return unique(technologies.map(toDisplayTechnology))
+    .sort((first, second) => {
+      const firstCategory = categoryByTechnology.get(first.toLowerCase())
+      const secondCategory = categoryByTechnology.get(second.toLowerCase())
+      const firstPriority = firstCategory?.priority ?? 10
+      const secondPriority = secondCategory?.priority ?? 10
+
+      if (firstPriority !== secondPriority) return firstPriority - secondPriority
+
+      const firstIndex = firstCategory?.index ?? Number.MAX_SAFE_INTEGER
+      const secondIndex = secondCategory?.index ?? Number.MAX_SAFE_INTEGER
+
+      if (firstIndex !== secondIndex) return firstIndex - secondIndex
+
+      return first.localeCompare(second)
+    })
+}
+
+function getProjectType(technologies, fallback) {
+  return technologies.find((technology) => {
+    const category = categoryByTechnology.get(technology.toLowerCase())
+
+    return category?.name === 'framework'
+  }) || fallback || 'Repo'
+}
 
 function getContributionLevel(count) {
   if (count === 0) return 0
@@ -102,7 +241,11 @@ function getWebsiteScreenshot(homepageUrl) {
 function mapRepositoryToProject(repo, username) {
   const languages = repo.languages.nodes.map((language) => language.name)
   const topics = repo.repositoryTopics.nodes.map((node) => node.topic.name)
-  const technologyList = unique([...languages, repo.primaryLanguage?.name, ...topics]).slice(0, 7)
+  const technologyList = sortTechnologiesByCategory([
+    ...topics,
+    repo.primaryLanguage?.name,
+    ...languages,
+  ]).slice(0, 7)
   const fallbackDomain = `github.com/${username}/${repo.name}`
   const fallbackImage = getRepositoryOpenGraphImage(username, repo.name)
 
@@ -114,7 +257,7 @@ function mapRepositoryToProject(repo, username) {
     imageFallback: fallbackImage,
     technologies: technologyList.length ? technologyList : ['GitHub'],
     title: repo.name,
-    type: repo.primaryLanguage?.name || 'Repo',
+    type: getProjectType(technologyList, repo.primaryLanguage?.name),
     url: repo.homepageUrl || repo.url,
   }
 }
@@ -136,7 +279,6 @@ function mapGitHubProfile(user, username) {
 
       return new Date(second.pushedAt) - new Date(first.pushedAt)
     })
-    .slice(0, 3)
     .map((repo) => mapRepositoryToProject(repo, username))
 
   return {
@@ -150,11 +292,33 @@ function mapGitHubProfile(user, username) {
     followers: user.followers.totalCount,
     publicRepos: user.repositories.totalCount,
     projects,
-    technologies: unique([...repoLanguages, ...languages, ...topics]).slice(0, 18),
+    technologies: sortTechnologiesByCategory([...topics, ...repoLanguages, ...languages]).slice(0, 18),
     totalContributions: user.contributionsCollection.contributionCalendar.totalContributions,
     totalForks,
     totalStars,
     username,
+  }
+}
+
+async function requestGitHubProfilePage(token, username, repositoriesAfter) {
+  const githubResponse = await fetch(GITHUB_GRAPHQL_URL, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      query: githubPortfolioQuery,
+      variables: { repositoriesAfter, username },
+    }),
+  })
+
+  const payload = await githubResponse.json()
+
+  return {
+    ok: githubResponse.ok,
+    payload,
+    status: githubResponse.status,
   }
 }
 
@@ -169,35 +333,41 @@ export default async function handler(request, response) {
   }
 
   try {
-    const githubResponse = await fetch(GITHUB_GRAPHQL_URL, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        query: githubPortfolioQuery,
-        variables: { username },
-      }),
-    })
+    let profileUser = null
+    let repositoriesAfter = null
+    const repositories = []
 
-    const payload = await githubResponse.json()
+    do {
+      const { ok, payload, status } = await requestGitHubProfilePage(
+        token,
+        username,
+        repositoriesAfter,
+      )
 
-    if (!githubResponse.ok || payload.errors?.length) {
-      response.status(githubResponse.status || 502).json({
-        error: 'GitHub GraphQL request failed.',
-        details: payload.errors,
-      })
-      return
-    }
+      if (!ok || payload.errors?.length) {
+        response.status(status || 502).json({
+          error: 'GitHub GraphQL request failed.',
+          details: payload.errors,
+        })
+        return
+      }
 
-    if (!payload.data.user) {
-      response.status(404).json({ error: `GitHub user "${username}" was not found.` })
-      return
-    }
+      if (!payload.data.user) {
+        response.status(404).json({ error: `GitHub user "${username}" was not found.` })
+        return
+      }
+
+      profileUser = profileUser || payload.data.user
+      repositories.push(...payload.data.user.repositories.nodes)
+      repositoriesAfter = payload.data.user.repositories.pageInfo.hasNextPage
+        ? payload.data.user.repositories.pageInfo.endCursor
+        : null
+    } while (repositoriesAfter)
+
+    profileUser.repositories.nodes = repositories
 
     response.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400')
-    response.status(200).json(mapGitHubProfile(payload.data.user, username))
+    response.status(200).json(mapGitHubProfile(profileUser, username))
   } catch (error) {
     response.status(500).json({
       error: 'Unable to load GitHub profile.',
