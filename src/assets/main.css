@@ -16,8 +16,8 @@
   z-index: -2;
   content: "";
   background:
-    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
     radial-gradient(circle at 22% -6%, rgba(43, 45, 66, 0.64), transparent 24rem),
     radial-gradient(circle at 52% -8%, rgba(141, 153, 174, 0.2), transparent 25rem),
     radial-gradient(circle at 75% -5%, rgba(239, 35, 60, 0.18), transparent 25rem),
@@ -32,8 +32,8 @@
   pointer-events: none;
   content: "";
   background:
-    linear-gradient(90deg, rgba(5, 6, 7, 0.92), transparent 24%, transparent 76%, rgba(5, 6, 7, 0.92)),
-    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.02) 0 1px, transparent 1px 5px);
+    linear-gradient(90deg, var(--page-edge), transparent 24%, transparent 76%, var(--page-edge)),
+    repeating-linear-gradient(0deg, var(--page-scan) 0 1px, transparent 1px 5px);
 }
 
 /* Button icon helper */
@@ -120,9 +120,9 @@ h3 {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.13);
+  border: 1px solid var(--field-line);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.045);
+  background: var(--chip-bg);
   color: var(--muted-strong);
   padding: 8px 11px;
   font-size: 0.9rem;
@@ -139,6 +139,11 @@ h3 {
 .tech-list img[src*='github'],
 .tech-list img[src*='vercel'] {
   filter: invert(1);
+}
+
+:root[data-theme='light'] .tech-list img[src*='github'],
+:root[data-theme='light'] .tech-list img[src*='vercel'] {
+  filter: none;
 }
 
 .tech-list img[src*='handlebars'] {

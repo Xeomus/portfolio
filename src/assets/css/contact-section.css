@@ -10,9 +10,9 @@
   border-radius: 18px;
   background:
     linear-gradient(135deg, rgba(43, 45, 66, 0.45), transparent 34%),
-    rgba(17, 19, 24, 0.86);
+    var(--panel-bg);
   box-shadow:
-    0 28px 80px rgba(0, 0, 0, 0.36),
+    0 28px 80px var(--shadow-strong),
     inset 0 0 0 1px rgba(255, 255, 255, 0.025);
   padding: 28px;
 }
@@ -31,10 +31,10 @@
 .contact-form input,
 .contact-form textarea {
   width: 100%;
-  border: 1px solid rgba(255, 255, 255, 0.13);
+  border: 1px solid var(--field-line);
   border-radius: 10px;
   outline: none;
-  background: rgba(5, 6, 7, 0.58);
+  background: var(--field-bg);
   color: var(--text);
   padding: 14px 16px;
 }
@@ -88,7 +88,7 @@
   border: 1px solid rgba(239, 35, 60, 0.38);
   border-radius: 8px;
   background: linear-gradient(135deg, var(--strawberry-red), var(--flag-red));
-  color: var(--text);
+  color: var(--on-accent);
   padding: 12px 18px;
   font-weight: 900;
   box-shadow: 0 0 26px rgba(239, 35, 60, 0.24);
