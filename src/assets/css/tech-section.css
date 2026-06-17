@@ -38,9 +38,9 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.13);
+  border: 1px solid var(--field-line);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.045);
+  background: var(--chip-bg);
   color: var(--muted-strong);
   padding: 12px 15px;
   font-size: 0.9rem;
@@ -57,6 +57,11 @@
 .tech-cloud img[src*='github'],
 .tech-cloud img[src*='vercel'] {
   filter: invert(1);
+}
+
+:root[data-theme='light'] .tech-cloud img[src*='github'],
+:root[data-theme='light'] .tech-cloud img[src*='vercel'] {
+  filter: none;
 }
 
 .tech-cloud img[src*='handlebars'] {

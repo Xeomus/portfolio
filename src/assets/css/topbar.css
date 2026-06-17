@@ -11,7 +11,7 @@
   gap: 24px;
   padding: 8px 14px;
   border: 1px solid transparent;
-  background: rgba(5, 6, 7, 0.34);
+  background: var(--glass-bg);
   backdrop-filter: blur(18px);
   transform: translateX(-50%);
 }
@@ -39,7 +39,8 @@
 }
 
 .topbar nav a,
-.topbar-action {
+.topbar-action,
+.theme-toggle {
   flex: 0 0 auto;
   border-radius: 8px;
   padding: 12px 14px;
@@ -51,10 +52,38 @@
 
 .topbar nav a.active,
 .topbar nav a:hover,
-.topbar-action:hover {
+.topbar-action:hover,
+.theme-toggle:hover {
   background: rgba(239, 35, 60, 0.12);
   color: var(--text);
   box-shadow: inset 0 0 0 1px rgba(239, 35, 60, 0.12);
+}
+
+.topbar nav a .bi {
+  display: none;
+}
+
+.topbar-actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.mobile-menu-toggle {
+  display: none;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  width: 46px;
+  height: 46px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted-strong);
+  font-size: 1rem;
 }
 
 .topbar-action {
@@ -67,7 +96,7 @@
   .topbar {
     top: 10px;
     border-radius: 16px;
-    background: rgba(5, 6, 7, 0.78);
+    background: var(--glass-strong);
   }
 
   .topbar-action {
@@ -82,33 +111,132 @@
 
 @media (max-width: 620px) {
   .topbar {
-    width: calc(100% - 18px);
-    padding: 8px;
-    gap: 8px;
+    top: auto;
+    right: 14px;
+    bottom: 14px;
+    left: auto;
+    width: auto;
+    min-height: 0;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    backdrop-filter: none;
+    pointer-events: none;
+    transform: none;
   }
 
   .brand {
-    font-size: 1rem;
-  }
-
-  .brand .brand-icon {
-    width: 30px;
-    height: 30px;
-  }
-
-  .topbar nav {
-    flex: 1 1 auto;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-
-  .topbar nav::-webkit-scrollbar {
     display: none;
   }
 
+  .topbar nav {
+    order: 1;
+    display: grid;
+    min-width: 210px;
+    gap: 6px;
+    align-items: stretch;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: var(--glass-strong);
+    padding: 10px;
+    box-shadow: 0 18px 48px var(--shadow-strong);
+    opacity: 0;
+    pointer-events: auto;
+    transform: translateY(10px) scale(0.98);
+    transform-origin: right bottom;
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease,
+      visibility 0.2s ease;
+    visibility: hidden;
+  }
+
   .topbar nav a {
-    padding: 8px 7px;
+    display: inline-flex;
+    width: 100%;
+    min-height: 46px;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    border-radius: 10px;
+    padding: 10px 12px;
     white-space: nowrap;
+  }
+
+  .topbar nav a .bi {
+    display: block;
+    font-size: 1.05rem;
+  }
+
+  .topbar nav a.active {
+    background: rgba(239, 35, 60, 0.14);
+    color: var(--text);
+    box-shadow: inset 0 0 0 1px rgba(239, 35, 60, 0.18);
+  }
+
+  .nav-label {
+    display: inline;
+  }
+
+  .topbar-actions {
+    order: 2;
+    display: grid;
+    min-width: 210px;
+    gap: 8px;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: var(--glass-strong);
+    padding: 10px;
+    box-shadow: 0 18px 48px var(--shadow-strong);
+    opacity: 0;
+    pointer-events: auto;
+    transform: translateY(10px) scale(0.98);
+    transform-origin: right bottom;
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease,
+      visibility 0.2s ease;
+    visibility: hidden;
+  }
+
+  .theme-toggle {
+    width: 100%;
+    height: 46px;
+    border-radius: 10px;
+    background: transparent;
+    box-shadow: none;
+    color: var(--text);
+  }
+
+  .theme-toggle::after {
+    margin-left: 10px;
+    content: "Theme";
+    font-weight: 900;
+  }
+
+  .mobile-menu-toggle {
+    display: inline-flex;
+    order: 3;
+    width: 58px;
+    height: 58px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--strawberry-red), var(--flag-red));
+    box-shadow: 0 18px 48px var(--shadow-strong);
+    color: var(--on-accent);
+    font-size: 1.45rem;
+    pointer-events: auto;
+  }
+
+  .topbar.is-menu-open nav,
+  .topbar.is-menu-open .topbar-actions {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    visibility: visible;
   }
 }
 

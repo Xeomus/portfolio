@@ -12,9 +12,9 @@
   border-radius: 18px;
   background:
     linear-gradient(135deg, rgba(43, 45, 66, 0.45), transparent 34%),
-    rgba(17, 19, 24, 0.86);
+    var(--panel-bg);
   box-shadow:
-    0 28px 80px rgba(0, 0, 0, 0.36),
+    0 28px 80px var(--shadow-strong),
     inset 0 0 0 1px rgba(255, 255, 255, 0.025);
 }
 
@@ -24,7 +24,7 @@
   padding: 44px 40px 40px;
   background:
     linear-gradient(90deg, rgba(5, 6, 7, 0.4), transparent),
-    rgba(10, 12, 15, 0.82);
+    var(--media-bg);
 }
 
 .browser-bar {
@@ -81,7 +81,7 @@
   justify-content: center;
   gap: 0;
   padding: 48px;
-  background: rgba(255, 255, 255, 0.025);
+  background: var(--panel-soft);
 }
 
 .project-type {
@@ -154,7 +154,7 @@
 .projects-empty {
   border: 1px solid var(--line);
   border-radius: 18px;
-  background: rgba(17, 19, 24, 0.72);
+  background: var(--panel-muted);
   color: var(--muted-strong);
   padding: 28px;
 }
@@ -170,9 +170,9 @@
 .project-pagination button {
   min-width: 44px;
   min-height: 42px;
-  border: 1px solid rgba(255, 255, 255, 0.13);
+  border: 1px solid var(--field-line);
   border-radius: 8px;
-  background: rgba(17, 19, 24, 0.82);
+  background: var(--panel-bg);
   color: var(--text);
   padding: 10px 14px;
   font-weight: 900;
