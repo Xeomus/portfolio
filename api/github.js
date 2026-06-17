@@ -379,7 +379,7 @@ export default async function handler(request, response) {
 
     profileUser.repositories.nodes = repositories
 
-    response.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400')
+    response.setHeader('Cache-Control', 'no-store, max-age=0')
     response.status(200).json(mapGitHubProfile(profileUser, username))
   } catch (error) {
     response.status(500).json({

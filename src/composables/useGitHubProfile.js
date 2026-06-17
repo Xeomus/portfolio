@@ -45,7 +45,13 @@ export function useGitHubProfile() {
 
   onMounted(async () => {
     try {
-      const response = await fetch(`/api/github?username=${githubUsername}`)
+      const params = new URLSearchParams({
+        t: Date.now().toString(),
+        username: githubUsername,
+      })
+      const response = await fetch(`/api/github?${params.toString()}`, {
+        cache: 'no-store',
+      })
 
       if (!response.ok) {
         throw new Error(`GitHub API response ${response.status}`)
