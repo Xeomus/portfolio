@@ -219,13 +219,23 @@ function unique(values) {
 }
 
 function getDomain(homepageUrl, fallback) {
-  if (!homepageUrl) return fallback
+  const normalizedUrl = normalizeExternalUrl(homepageUrl)
 
   try {
-    return new URL(homepageUrl).hostname
+    return normalizedUrl ? new URL(normalizedUrl).hostname : fallback
   } catch {
     return fallback
   }
+}
+
+function normalizeExternalUrl(value) {
+  const url = String(value || '').trim()
+
+  if (!url) return ''
+
+  if (/^https?:\/\//i.test(url)) return url
+
+  return `https://${url}`
 }
 
 function getRepositoryOpenGraphImage(username, repoName) {
@@ -233,9 +243,11 @@ function getRepositoryOpenGraphImage(username, repoName) {
 }
 
 function getWebsiteScreenshot(homepageUrl) {
-  if (!homepageUrl) return null
+  const normalizedUrl = normalizeExternalUrl(homepageUrl)
 
-  return `https://s.wordpress.com/mshots/v1/${encodeURIComponent(homepageUrl)}?w=1200`
+  if (!normalizedUrl) return null
+
+  return `https://s.wordpress.com/mshots/v1/${encodeURIComponent(normalizedUrl)}?w=1200`
 }
 
 function mapRepositoryToProject(repo, username) {
@@ -248,17 +260,18 @@ function mapRepositoryToProject(repo, username) {
   ]).slice(0, 7)
   const fallbackDomain = `github.com/${username}/${repo.name}`
   const fallbackImage = getRepositoryOpenGraphImage(username, repo.name)
+  const homepageUrl = normalizeExternalUrl(repo.homepageUrl)
 
   return {
     date: formatDateRange(repo.pushedAt),
     description: repo.description || 'Repositorio publico de GitHub con codigo, commits y actividad real.',
-    domain: getDomain(repo.homepageUrl, fallbackDomain),
-    image: getWebsiteScreenshot(repo.homepageUrl) || fallbackImage,
+    domain: getDomain(homepageUrl, fallbackDomain),
+    image: getWebsiteScreenshot(homepageUrl) || fallbackImage,
     imageFallback: fallbackImage,
     technologies: technologyList.length ? technologyList : ['GitHub'],
     title: repo.name,
     type: getProjectType(technologyList, repo.primaryLanguage?.name),
-    url: repo.homepageUrl || repo.url,
+    url: homepageUrl || repo.url,
   }
 }
 

@@ -37,6 +37,15 @@ function setProjectPage(page) {
   currentPage.value = Math.min(Math.max(page, 1), totalPages.value)
 }
 
+function getProjectUrl(url) {
+  const normalizedUrl = String(url || '').trim()
+
+  if (!normalizedUrl) return ''
+  if (/^https?:\/\//i.test(normalizedUrl)) return normalizedUrl
+
+  return `https://${normalizedUrl}`
+}
+
 function useProjectImageFallback(event, fallbackImage) {
   if (!fallbackImage || event.target.src === fallbackImage) return
 
@@ -103,7 +112,13 @@ function useProjectImageFallback(event, fallbackImage) {
           <h3>{{ project.title }}</h3>
           <time>{{ project.date }}</time>
           <p>{{ project.description }}</p>
-          <a v-if="project.url" class="read-more" :href="project.url" target="_blank" rel="noreferrer">
+          <a
+            v-if="getProjectUrl(project.url)"
+            class="read-more"
+            :href="getProjectUrl(project.url)"
+            target="_blank"
+            rel="noreferrer"
+          >
             View Project ->
           </a>
           <button v-else type="button" class="read-more">Read more -></button>
